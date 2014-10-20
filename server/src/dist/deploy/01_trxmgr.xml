@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<txnmgr name="MyTxn" logger="Q2" class="org.jpos.transaction.TransactionManager">
+    <property name="space"              value="tspace:default" />
+    <property name="queue"              value="MyTxnQueuePG" />
+    <property name="session"            value="100" />
+    <property name="debug" value="false" />
+
+    <participant class="com.smartbee.jamu.jpos.server.jpos.Selector" logger="Q2">
+        <property name="0200370000" value="Inquiry" />
+    </participant>
+
+    <group name="Inquiry">
+        <participant class="com.smartbee.jamu.jpos.server.jpos.Inquiry" logger="Q2"/>
+    </group>
+
+</txnmgr>

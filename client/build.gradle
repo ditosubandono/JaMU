@@ -1,0 +1,63 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'docker'
+
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath 'se.transmode.gradle:gradle-docker:1.2'
+    }
+}
+
+group = 'org.jpos.template'
+version = '1.0.0'
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+    maven {url 'http://download.oracle.com/maven'}
+    maven {url 'http://jline.sourceforge.net/m2repo'}
+    maven {url 'http://jpos.org/maven' }
+    mavenLocal()
+}
+
+dependencies {
+    compile ('org.jpos:jpos:1.9.8') {
+        exclude(module: 'junit')
+        exclude(module: 'hamcrest-core')
+    }
+
+    compile ('org.jpos.ee:jposee-db-postgresql:2.0.6-SNAPSHOT') {
+        exclude(module: 'postgresql')
+    }
+    compile 'org.jpos.ee:jposee-jetty:2.0.6-SNAPSHOT'
+    compile 'org.jpos.ee:jposee-client-simulator:2.0.6-SNAPSHOT'
+
+    compile 'org.springframework:spring-context:4.0.3.RELEASE'
+    compile 'org.springframework:spring-context-support:4.0.3.RELEASE'
+    compile 'org.springframework:spring-webmvc:4.0.3.RELEASE'
+
+    compile 'cglib:cglib:2.2.2'
+    compile 'org.freemarker:freemarker:2.3.20'
+
+    compile 'javax:javaee-api:7.0'
+
+    compile'org.eclipse.jetty:jetty-server:9.2.2.v20140723'
+    compile 'org.eclipse.jetty:jetty-jsp:9.2.2.v20140723'
+
+    testCompile 'junit:junit:4.8.2'
+}
+
+apply from: 'jpos-app.gradle'
+
+genDocker {
+    baseImage "vmantek/docker-java8"
+    maintainer 'A Developer "galih.lasahido@gmail.com"'
+    tag project.name
+    tagVersion "latest"
+    //--Uncomment and modify line below to expose a port.
+    //exposePort 4444
+}
